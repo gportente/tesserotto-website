@@ -2,3 +2,5 @@
 .github
 scripts
 README.md
+package.json
+.hallmark

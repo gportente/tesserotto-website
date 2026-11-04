@@ -1,6 +1,6 @@
 name: Immagine
 
-# Ogni push e pull request: build e smoke test.
+# Ogni push e pull request: test del decoder, build e smoke test.
 # Tag vX.Y.Z: in più pubblica l'immagine su GHCR.
 on:
   push:
@@ -21,6 +21,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Test del decoder dei link
+        run: npm test
 
       - uses: docker/setup-buildx-action@v3
 

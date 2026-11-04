@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Importa Tessera - Tesserotto</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 20px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: white;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .card-info {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .card-name {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .card-description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .import-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin: 10px;
+        }
+
+        .import-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .loading {
+            display: none;
+            margin: 20px 0;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: #ffe6e6;
+            color: #d63031;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">T</div>
+        <h1>Importa Tessera</h1>
+        <p class="subtitle">
+            Stai per importare una tessera fedeltà in Tesserotto
+        </p>
+        
+        <div id="cardInfo" class="card-info" style="display: none;">
+            <div class="card-name" id="cardName"></div>
+            <div class="card-description" id="cardDescription"></div>
+        </div>
+
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <p>Apertura dell'app...</p>
+        </div>
+
+        <div id="error" class="error">
+            <p>Errore nel caricamento della tessera. Verifica che il link sia corretto.</p>
+        </div>
+
+        <button id="importBtn" class="import-btn" onclick="importCard()">
+            📱 Importa in Tesserotto
+        </button>
+        
+        <a href="/" class="import-btn" style="background: #95a5a6;">
+            🏠 Torna alla Home
+        </a>
+    </div>
+
+    <script>
+        let cardData = null;
+
+        // Funzione per decodificare i dati Base64
+        function decodeBase64(str) {
+            try {
+                return JSON.parse(atob(str));
+            } catch (e) {
+                console.error('Errore nella decodifica:', e);
+                return null;
+            }
+        }
+
+        // Funzione per estrarre i dati dalla URL
+        function extractCardData() {
+            const path = window.location.pathname;
+            const segments = path.split('/');
+            const encodedData = segments[segments.length - 1];
+            
+            if (encodedData) {
+                cardData = decodeBase64(encodedData);
+                if (cardData) {
+                    displayCardInfo(cardData);
+                    return true;
+                }
+            }
+            
+            showError();
+            return false;
+        }
+
+        // Funzione per mostrare le informazioni della tessera
+        function displayCardInfo(data) {
+            const cardInfo = document.getElementById('cardInfo');
+            const cardName = document.getElementById('cardName');
+            const cardDescription = document.getElementById('cardDescription');
+            
+            cardName.textContent = data.name || 'Tessera senza nome';
+            cardDescription.textContent = data.description || 'Nessuna descrizione disponibile';
+            
+            cardInfo.style.display = 'block';
+        }
+
+        // Funzione per mostrare errore
+        function showError() {
+            document.getElementById('error').style.display = 'block';
+            document.getElementById('importBtn').style.display = 'none';
+        }
+
+        // Funzione per importare la tessera
+        function importCard() {
+            if (!cardData) {
+                showError();
+                return;
+            }
+
+            const loading = document.getElementById('loading');
+            const importBtn = document.getElementById('importBtn');
+            
+            loading.style.display = 'block';
+            importBtn.style.display = 'none';
+
+            // Crea un intent Android per aprire l'app
+            const intentUrl = `intent://app.auxrideum.ddns.ms/import/${btoa(JSON.stringify(cardData))}#Intent;scheme=https;package=com.gportente.tesserotto;end`;
+            
+            // Prova ad aprire l'app usando intent
+            window.location.href = intentUrl;
+            
+            // Fallback: dopo 3 secondi, ripristina il bottone
+            setTimeout(() => {
+                loading.style.display = 'none';
+                importBtn.style.display = 'inline-block';
+            }, 3000);
+        }
+
+        // Inizializza la pagina
+        document.addEventListener('DOMContentLoaded', function() {
+            extractCardData();
+        });
+    </script>
+</body>
+</html> 

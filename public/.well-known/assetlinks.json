@@ -1,0 +1,10 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.gportente.tesserotto",
+      "sha256_cert_fingerprints": ["C5:23:2D:86:E5:0D:0F:93:AC:A9:D6:D9:14:82:B3:56:47:93:B6:7D:00:48:4D:66:8A:CE:88:3F:81:27:37:A7"]
+    }
+  }
+]

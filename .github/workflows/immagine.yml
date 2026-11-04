@@ -39,7 +39,7 @@ jobs:
       - name: Tag dell'immagine
         id: meta
         if: startsWith(github.ref, 'refs/tags/v')
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         with:
           images: ${{ env.IMAGE }}
           tags: |

@@ -1,270 +1,238 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tesserotto - Gestore Tessere Fedeltà</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tesserotto · Le tessere fedeltà, senza account</title>
+  <meta name="description" content="Tesserotto è l'app Android per le carte fedeltà: le tessere restano sul telefono, si aprono in un tocco alla cassa, senza registrazione, pubblicità o tracciamento.">
+  <link rel="canonical" href="https://app.gabrieleportente.it/">
+  <meta name="theme-color" content="#FAF6F0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#17140F" media="(prefers-color-scheme: dark)">
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="it_IT">
+  <meta property="og:site_name" content="Tesserotto">
+  <meta property="og:title" content="Tesserotto · Le tessere fedeltà, senza account">
+  <meta property="og:description" content="Le carte fedeltà sul telefono, pronte alla cassa. Niente registrazione, niente pubblicità, niente tracciamento.">
+  <meta property="og:url" content="https://app.gabrieleportente.it/">
+  <meta property="og:image" content="https://app.gabrieleportente.it/assets/media/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Tre schermate di Tesserotto: dettaglio di una tessera, elenco delle tessere e tema scuro">
+  <meta name="twitter:card" content="summary_large_image">
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        header {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 1rem 0;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: white;
-        }
-
-        .hero {
-            padding: 120px 0 80px;
-            text-align: center;
-            color: white;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            font-weight: 700;
-        }
-
-        .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: #ff6b6b;
-            color: white;
-            padding: 15px 30px;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
-        }
-
-        .features {
-            padding: 80px 0;
-            background: white;
-        }
-
-        .features h2 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            color: #333;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .feature-card {
-            background: #f8f9fa;
-            padding: 2rem;
-            border-radius: 15px;
-            text-align: center;
-            transition: transform 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .feature-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .feature-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #333;
-        }
-
-        .feature-card p {
-            color: #666;
-            line-height: 1.6;
-        }
-
-        .download-section {
-            padding: 80px 0;
-            background: #f8f9fa;
-            text-align: center;
-        }
-
-        .download-section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
-            color: #333;
-        }
-
-        .download-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .download-btn {
-            background: #333;
-            color: white;
-            padding: 15px 30px;
-            text-decoration: none;
-            border-radius: 10px;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-
-        .download-btn:hover {
-            background: #555;
-            transform: translateY(-2px);
-        }
-
-        footer {
-            background: #333;
-            color: white;
-            text-align: center;
-            padding: 2rem 0;
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            
-            .hero p {
-                font-size: 1.1rem;
-            }
-            
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .download-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-    </style>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon.png" type="image/png" sizes="64x64">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preload" href="/assets/fonts/fraunces-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/manrope-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/tokens.css">
+  <link rel="stylesheet" href="/assets/css/site.css">
+  <script type="module" src="/assets/js/home.js"></script>
 </head>
 <body>
-    <header>
-        <nav class="container">
-            <div class="logo">🎫 Tesserotto</div>
-        </nav>
-    </header>
+  <a class="skip-link" href="#contenuto">Vai al contenuto</a>
 
-    <section class="hero">
-        <div class="container">
-            <h1>Gestisci le tue tessere fedeltà</h1>
-            <p>Organizza, condividi e usa tutte le tue tessere fedeltà in un'unica app elegante e intuitiva</p>
-            <a href="#download" class="cta-button">Scarica Ora</a>
+  <header class="wrap nav-edge">
+    <a class="wordmark" href="/" aria-label="Tesserotto, pagina iniziale">
+      <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <rect class="mark-back" x="7" y="4" width="22" height="16" rx="5"/>
+        <rect class="mark-front" x="3" y="11" width="22" height="16" rx="5"/>
+        <rect class="mark-code" x="15" y="19" width="1.6" height="5" rx="0.6"/>
+        <rect class="mark-code" x="18" y="19" width="1" height="5" rx="0.5"/>
+        <rect class="mark-code" x="20.2" y="19" width="1.6" height="5" rx="0.6"/>
+      </svg>
+      Tesserotto
+    </a>
+    <a class="btn btn--quiet btn--sm" href="#scarica">Scarica</a>
+  </header>
+
+  <main id="contenuto">
+    <section class="wrap hero" aria-labelledby="titolo">
+      <div>
+        <h1 id="titolo" class="hero__title reveal">Le tessere fedeltà, senza account.</h1>
+        <p class="hero__lede reveal reveal--2">Tesserotto tiene le tue carte fedeltà sul telefono e te le mostra in un tocco alla cassa. Nessuna registrazione, nessuna pubblicità, nessun tracciamento.</p>
+        <div class="hero__actions reveal reveal--3">
+          <a class="btn btn--primary" href="https://github.com/gportente/tesserotto/releases/latest/download/app-release.apk">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M11 4a1 1 0 1 1 2 0v9.59l3.3-3.3a1 1 0 1 1 1.4 1.42l-5 5a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.42l3.3 3.3V4ZM5 19a1 1 0 1 0 0 2h14a1 1 0 1 0 0-2H5Z"/></svg>
+            Scarica per Android
+          </a>
+          <a class="link-arrow" href="#come-funziona">Guarda com'è fatta →</a>
         </div>
+        <ul class="hero__facts reveal reveal--4">
+          <li>Gratis</li>
+          <li>Dati sul telefono</li>
+          <li>Codice su GitHub</li>
+        </ul>
+      </div>
+
+      <figure class="hero__shots">
+        <img class="shot shot--back" src="/assets/media/details.webp" width="720" height="1600" alt="" fetchpriority="high">
+        <img class="shot shot--front" src="/assets/media/home.webp" width="720" height="1600" alt="La schermata principale di Tesserotto: otto tessere colorate in griglia, con la ricerca in alto e il pulsante Aggiungi tessera" fetchpriority="high">
+      </figure>
     </section>
 
-    <section class="features">
-        <div class="container">
-            <h2>Caratteristiche Principali</h2>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">📱</div>
-                    <h3>Interfaccia Moderna</h3>
-                    <p>Design pulito e intuitivo che rende la gestione delle tessere fedeltà un'esperienza piacevole</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🔍</div>
-                    <h3>Scansione Veloce</h3>
-                    <p>Scansiona i codici a barre delle tessere in pochi secondi e aggiungile alla tua collezione</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🎨</div>
-                    <h3>Personalizzazione</h3>
-                    <p>Personalizza i colori e organizza le tessere come preferisci per una gestione ottimale</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">📤</div>
-                    <h3>Condivisione Facile</h3>
-                    <p>Condividi le tessere con amici e familiari tramite link o codici QR</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">💾</div>
-                    <h3>Backup Sicuro</h3>
-                    <p>Esporta e importa le tue tessere per mantenere sempre al sicuro i tuoi dati</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">🌙</div>
-                    <h3>Modalità Scura</h3>
-                    <p>Supporto per la modalità scura per un'esperienza visiva confortevole in ogni momento</p>
-                </div>
+    <section class="section section--tint" id="come-funziona" aria-labelledby="titolo-giro">
+      <div class="wrap">
+        <div class="section__head">
+          <h2 id="titolo-giro" class="section__title">Un giro nell'app</h2>
+          <p class="section__lede">Registrazioni e schermate dalla versione attuale. Le tessere sono di esempio.</p>
+        </div>
+
+        <ol class="tour">
+          <li class="tour__item">
+            <div class="tour__media">
+              <video class="shot" data-autoplay muted loop playsinline controls preload="none" width="480" height="1066" poster="/assets/media/cassa-poster.webp" aria-label="Registrazione: si apre una tessera con codice a barre, poi una con codice QR">
+                <source src="/assets/media/cassa.mp4" type="video/mp4">
+              </video>
             </div>
-        </div>
-    </section>
-
-    <section class="download-section" id="download">
-        <div class="container">
-            <h2>Scarica Tesserotto</h2>
-            <p style="font-size: 1.2rem; margin-bottom: 2rem; color: #666;">
-                Disponibile su tutte le piattaforme principali
-            </p>
-            <div class="download-buttons">
-                <a href="#" class="download-btn">📱 Google Play</a>
-                <a href="#" class="download-btn">🍎 App Store</a>
+            <div class="tour__text">
+              <h3 class="tour__title">Alla cassa, un tocco</h3>
+              <p class="tour__body">Tocchi la tessera e il codice occupa lo schermo, pronto per lo scanner. Niente menu da attraversare mentre c'è la fila.</p>
+              <ul class="tour__notes">
+                <li>La luminosità sale al massimo e torna com'era quando esci.</li>
+                <li>Il codice resta su fondo chiaro anche con il tema scuro.</li>
+                <li>Il numero è scritto per esteso, se il lettore non collabora.</li>
+              </ul>
             </div>
-        </div>
+          </li>
+
+          <li class="tour__item">
+            <div class="tour__media">
+              <img class="shot" src="/assets/media/add.webp" width="720" height="1600" loading="lazy" alt="Schermata Aggiungi tessera: anteprima colorata, campo nome, pulsante Scansiona il codice a barre, opzioni Inserisci manualmente e Da immagine, scelta del colore">
+            </div>
+            <div class="tour__text">
+              <h3 class="tour__title">Aggiungi una tessera in pochi secondi</h3>
+              <p class="tour__body">Inquadri il codice con la fotocamera, lo leggi da uno screenshot salvato in galleria o lo scrivi a mano. Poi scegli nome, descrizione e colore.</p>
+              <ul class="formats" aria-label="Formati di codice supportati">
+                <li>EAN-13</li><li>EAN-8</li><li>UPC-A</li><li>Code 128</li><li>Code 39</li><li>Code 93</li>
+                <li>ITF</li><li>Codabar</li><li>QR Code</li><li>Aztec</li><li>Data Matrix</li><li>PDF417</li>
+              </ul>
+            </div>
+          </li>
+
+          <li class="tour__item">
+            <div class="tour__media">
+              <video class="shot" data-autoplay muted loop playsinline controls preload="none" width="480" height="1066" poster="/assets/media/ordina-poster.webp" aria-label="Registrazione: una tessera viene trascinata in un'altra posizione della griglia">
+                <source src="/assets/media/ordina.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="tour__text">
+              <h3 class="tour__title">Nell'ordine che ti serve</h3>
+              <p class="tour__body">Tieni premuto e trascini: la tessera del supermercato va in cima, quella del cinema in fondo. Se preferisci, l'ordine lo decide l'app.</p>
+              <ul class="tour__notes">
+                <li>Ordine alfabetico, per tessere più aperte o personalizzato.</li>
+                <li>Ricerca per nome e descrizione mentre scrivi.</li>
+                <li>Stella sui preferiti.</li>
+              </ul>
+            </div>
+          </li>
+
+          <li class="tour__item">
+            <div class="tour__media">
+              <img class="shot" src="/assets/media/qr.webp" width="720" height="1600" loading="lazy" alt="Dettaglio di una tessera con il pannello Condividi tramite QR aperto">
+            </div>
+            <div class="tour__text">
+              <h3 class="tour__title">Condividi una tessera in famiglia</h3>
+              <p class="tour__body">Mandi un link in chat, oppure mostri un QR da inquadrare con l'altro telefono. Chi ha Tesserotto la importa con un tocco; chi non ce l'ha vede la tessera in una pagina di questo sito.</p>
+            </div>
+          </li>
+
+          <li class="tour__item">
+            <div class="tour__media">
+              <img class="shot" src="/assets/media/import.webp" width="720" height="1600" loading="lazy" alt="Schermata Importa/Esporta con il riquadro Google Drive e i pulsanti Esporta e Importa">
+            </div>
+            <div class="tour__text">
+              <h3 class="tour__title">Il backup lo scegli tu</h3>
+              <p class="tour__body">Esporti un file JSON e lo tieni dove vuoi, oppure colleghi il tuo Google Drive e fai backup e ripristino con un pulsante.</p>
+              <ul class="tour__notes">
+                <li>Su Drive l'app usa una cartella nascosta tutta sua e non vede gli altri tuoi file.</li>
+                <li>Cambi telefono? Ripristini e ritrovi tessere, colori e ordine.</li>
+              </ul>
+            </div>
+          </li>
+
+          <li class="tour__item">
+            <div class="tour__media tour__media--pair">
+              <img class="shot shot--widget" src="/assets/media/widget.webp" width="455" height="905" loading="lazy" alt="Widget Tesserotto sulla schermata Home di Android con le cinque tessere più usate">
+              <img class="shot" src="/assets/media/home-dark.webp" width="720" height="1600" loading="lazy" alt="La griglia delle tessere con il tema scuro">
+            </div>
+            <div class="tour__text">
+              <h3 class="tour__title">Anche dalla schermata Home</h3>
+              <p class="tour__body">Il widget mostra le cinque tessere che usi di più, preferiti in testa: un tocco e sei già sul codice. Il tema segue quello del telefono, oppure lo fissi chiaro o scuro.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
     </section>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 Tesserotto. Tutti i diritti riservati.</p>
-            <p style="margin-top: 1rem; opacity: 0.8;">
-                Gestisci le tue tessere fedeltà in modo intelligente
-            </p>
+    <section class="section" id="privacy" aria-labelledby="titolo-privacy">
+      <div class="wrap">
+        <div class="section__head">
+          <h2 id="titolo-privacy" class="section__title">Cosa resta sul telefono</h2>
+          <p class="section__lede">Tutto, finché non decidi tu di farlo uscire.</p>
         </div>
-    </footer>
+        <dl class="facts">
+          <div class="facts__row">
+            <dt>Le tessere</dt>
+            <dd>Stanno in un database dentro l'app. Escono solo quando esporti un file, condividi un link o fai il backup su Drive.</dd>
+          </div>
+          <div class="facts__row">
+            <dt>L'account</dt>
+            <dd>Non serve. L'accesso con Google si usa solo se attivi il backup su Drive, e puoi disconnetterlo quando vuoi.</dd>
+          </div>
+          <div class="facts__row">
+            <dt>Google Drive</dt>
+            <dd>L'app chiede il permesso <code>drive.appdata</code>: vede soltanto la propria cartella nascosta, non documenti, foto o altri file.</dd>
+          </div>
+          <div class="facts__row">
+            <dt>Tracciamento</dt>
+            <dd>Nessun SDK di statistiche, pubblicità o profilazione. Anche questo sito non usa cookie né servizi di terze parti: font e immagini arrivano da qui.</dd>
+          </div>
+          <div class="facts__row">
+            <dt>I link condivisi</dt>
+            <dd>Contengono nome, descrizione, codice e colore della tessera, codificati ma non cifrati. Mandali a chi manderesti la tessera stessa.</dd>
+          </div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="section section--tint" id="scarica" aria-labelledby="titolo-scarica">
+      <div class="wrap install">
+        <div>
+          <div class="section__head">
+            <h2 id="titolo-scarica" class="section__title">Installa Tesserotto</h2>
+            <p class="section__lede">Per ora Tesserotto si installa dal file APK pubblicato su GitHub, non dal Play Store.</p>
+          </div>
+          <ol class="steps">
+            <li><div><strong>Scarica l'APK</strong><span>Dal telefono, con il pulsante qui accanto: prende sempre l'ultima versione pubblicata.</span></div></li>
+            <li><div><strong>Consenti l'installazione</strong><span>Android chiede di autorizzare il browser o il gestore file a installare app. Lo chiede una volta sola.</span></div></li>
+            <li><div><strong>Apri e aggiungi la prima tessera</strong><span>Gli aggiornamenti si installano sopra la versione precedente e le tessere restano dove sono.</span></div></li>
+          </ol>
+        </div>
+        <div class="install__cta">
+          <a class="btn btn--primary" href="https://github.com/gportente/tesserotto/releases/latest/download/app-release.apk">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M11 4a1 1 0 1 1 2 0v9.59l3.3-3.3a1 1 0 1 1 1.4 1.42l-5 5a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.42l3.3 3.3V4ZM5 19a1 1 0 1 0 0 2h14a1 1 0 1 0 0-2H5Z"/></svg>
+            Scarica l'APK
+          </a>
+          <a class="link-arrow" href="https://github.com/gportente/tesserotto/releases/latest">Note di rilascio →</a>
+          <p class="install__note">Serve Android. Su iPhone Tesserotto non è ancora distribuita.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap foot-mast">
+    <div>
+      <a class="wordmark" href="/">Tesserotto</a>
+      <p class="foot-mast__tagline">Le tessere fedeltà, sul tuo telefono.</p>
+    </div>
+    <ul class="foot-mast__links">
+      <li><a href="https://github.com/gportente/tesserotto">Codice sorgente</a></li>
+      <li><a href="https://github.com/gportente/tesserotto/releases">Versioni</a></li>
+      <li><a href="https://github.com/gportente/tesserotto/issues">Segnala un problema</a></li>
+    </ul>
+    <p class="foot-mast__legal">Progetto indipendente di Gabriele Portente. Nessuna affiliazione con Stocard, Klarna o con i negozi che emettono le tessere.</p>
+  </footer>
 </body>
 </html>

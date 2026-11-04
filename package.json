@@ -1,0 +1,9 @@
+{
+  "name": "tesserotto-website",
+  "private": true,
+  "type": "module",
+  "description": "Sito di Tesserotto: nessuna dipendenza, il package.json serve solo ai test.",
+  "scripts": {
+    "test": "node --test scripts/test-card-link.mjs"
+  }
+}
